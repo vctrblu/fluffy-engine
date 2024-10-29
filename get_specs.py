@@ -17,7 +17,7 @@ with open(input_file, 'r', encoding='utf-8') as csvfile:
     with open(output_file, 'w', newline='', encoding='utf-8') as outfile:
         writer = csv.writer(outfile)
         # Write the header for additional data
-        writer.writerow(['Product ID', 'Title', 'Price', 'Description', 'Image Sources'])
+        writer.writerow(['Product ID', 'Title', 'Price', 'Description'])
 
         # Loop through each link in the input file
         for row in reader:
@@ -43,22 +43,11 @@ with open(input_file, 'r', encoding='utf-8') as csvfile:
                     else 'N/A'
                 )
 
-                # Extract image sources
-                image_sources = []
-                image_divs = soup.find_all('div', class_='product-image-list-item')
-                for image_div in image_divs:
-                    img_tag = image_div.find('img')  # Find the <img> tag inside the <div>
-                    if img_tag and 'src' in img_tag.attrs:
-                        image_sources.append(img_tag['src'])  # Append the src attribute
-
                 # Log the extracted data
                 print(f"Scraped data for Product ID: {product_id}")
                 
-                # Join all image sources into a single string (comma-separated)
-                image_sources_str = ', '.join(image_sources)
-
                 # Write the data to the output CSV
-                writer.writerow([product_id, title, price, description, image_sources_str])
+                writer.writerow([product_id, title, price, description])
             else:
                 print(f"Failed to retrieve {link} (status code: {response.status_code})")
 
